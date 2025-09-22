@@ -180,13 +180,6 @@ class _TickingWidgetState extends State<TickingWidget>
         loopCount++;
       });
 
-      // // Randomly vary the duration of the loop so that it's clear that
-      // // the torchlight blink belongs to the current iteration (and it's not,
-      // // for example, a very late blink from the last iteration).
-      // _controller.duration = loopCount.isEven
-      //     ? Duration(seconds: 1)
-      //     : Duration(seconds: 2);
-
       blinkedThisLoop = true;
       dev.Timeline.finishSync();
     }
