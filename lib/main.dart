@@ -153,7 +153,9 @@ class _TickingWidgetState extends State<TickingWidget>
 
   /// We're doing it this way because [AnimationController.addStatusListener]
   /// doesn't fire when the animation is on repeat, and restarting an animation
-  /// manually introduces at least a frame of jank.
+  /// manually introduces at least a frame of distracting visual "jank"
+  /// (instead of continuity, one animation run ends at 100%, then the following
+  /// animation run start on next frame at 0%, which is the same position).
   void _update() {
     if (loopCount > 0) {
       frameCount++;
