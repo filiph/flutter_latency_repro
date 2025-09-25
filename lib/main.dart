@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_latency_repro/minimum_latency_render_object.dart';
 import 'package:flutter_latency_repro/minimum_latency_widget.dart';
 import 'package:torch_light/torch_light.dart';
 
@@ -105,6 +106,11 @@ class _TickingWidgetState extends State<TickingWidget>
                   ),
           ),
           MinimumLatencyWidget(counter: loopCount),
+          SizedBox(
+            width: 20,
+            height: 20,
+            child: MinimumLatencyROWidget(counter: loopCount),
+          ),
           SizedBox(height: 20),
           Text('AFPL: ${averageFramesPerLoop?.toStringAsFixed(2)}'),
         ],
