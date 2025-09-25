@@ -3,6 +3,7 @@ import 'dart:developer' as dev;
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:torch_light/torch_light.dart';
 
 void main() {
@@ -125,6 +126,10 @@ class _TickingWidgetState extends State<TickingWidget>
           torchLightAvailable = isAvailable;
         })
         .onError<EnableTorchException>((e, s) {
+          debugPrint("Couldn't determine torchlight availability: $e");
+          torchLightAvailable = false;
+        })
+        .onError<MissingPluginException>((e, s) {
           debugPrint("Couldn't determine torchlight availability: $e");
           torchLightAvailable = false;
         })
