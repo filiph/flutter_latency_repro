@@ -1,12 +1,15 @@
 import 'dart:async';
 import 'dart:developer' as dev;
 import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_latency_repro/minimum_latency_render_object.dart';
 import 'package:flutter_latency_repro/minimum_latency_widget.dart';
 import 'package:torch_light/torch_light.dart';
+
+import 'minimum_latency_raw_vertices_widget.dart';
 
 void main() {
   runApp(const MyApp());
@@ -49,12 +52,16 @@ class _TickingWidgetState extends State<TickingWidget>
   dev.Flow? flow;
   Stopwatch stopwatch = Stopwatch();
 
+  /// Attempt to directly change vertices.
+  Float32List verticesPositions = Float32List.fromList([0, 0, 20, 0, 20, 20]);
+
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          MinimumLatencyRawVerticesWidget(verticesPositions: verticesPositions),
           MinimumLatencyWidget(counter: loopCount),
           SizedBox(
             width: 20,
@@ -187,6 +194,9 @@ class _TickingWidgetState extends State<TickingWidget>
       flow = dev.Flow.begin();
       dev.Timeline.startSync('BENCH new loop started', flow: flow);
       maybeBlink();
+
+      // Vertices
+      verticesPositions[4] = loopCount.isOdd ? 0 : 20;
 
       // New loop started
       setState(() {

@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -53,26 +52,14 @@ class _Painter extends CustomPainter {
       ..color = Color(0xFFFF0000)
       ..style = PaintingStyle.fill;
 
-    // final vertices = Vertices(VertexMode.triangles, [
-    //   size.topLeft(Offset.zero),
-    //   size.topRight(Offset.zero),
-    //   if (counter.isEven)
-    //     size.bottomLeft(Offset.zero)
-    //   else
-    //     size.bottomRight(Offset.zero),
-    // ]);
-
-    final vertices = Vertices.raw(
-      VertexMode.triangles,
-      Float32List.fromList([
-        0,
-        0,
-        size.width,
-        0,
-        counter.isEven ? 0 : size.width,
-        size.height,
-      ]),
-    );
+    final vertices = Vertices(VertexMode.triangles, [
+      size.topLeft(Offset.zero),
+      size.topRight(Offset.zero),
+      if (counter.isEven)
+        size.bottomLeft(Offset.zero)
+      else
+        size.bottomRight(Offset.zero),
+    ]);
 
     canvas.drawVertices(vertices, BlendMode.srcOver, paint);
   }
