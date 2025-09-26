@@ -55,6 +55,13 @@ class _TickingWidgetState extends State<TickingWidget>
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          MinimumLatencyWidget(counter: loopCount),
+          SizedBox(
+            width: 20,
+            height: 20,
+            child: MinimumLatencyROWidget(counter: loopCount),
+          ),
+          SizedBox(height: 20),
           AnimatedBuilder(
             animation: _controller,
             builder: (context, child) {
@@ -104,12 +111,6 @@ class _TickingWidgetState extends State<TickingWidget>
                     backgroundColor: Color(0xFF000000),
                     color: Color(0xFFFFFFFF),
                   ),
-          ),
-          MinimumLatencyWidget(counter: loopCount),
-          SizedBox(
-            width: 20,
-            height: 20,
-            child: MinimumLatencyROWidget(counter: loopCount),
           ),
           SizedBox(height: 20),
           Text('AFPL: ${averageFramesPerLoop?.toStringAsFixed(2)}'),
