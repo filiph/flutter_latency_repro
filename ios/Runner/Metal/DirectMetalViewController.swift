@@ -35,9 +35,6 @@ class DirectMetalViewController: UIViewController {
         metalView.delegate = renderer
 
         view.addSubview(metalView)
-
-        // Hide status bar for maximum screen real estate
-        modalPresentationStyle = .fullScreen
     }
 
     override var prefersStatusBarHidden: Bool {
@@ -48,8 +45,8 @@ class DirectMetalViewController: UIViewController {
         renderer.initialize(with: data)
     }
 
-    func updateSprites(_ data: [String: Any]) {
-        renderer.updateSprites(data)
+    func updateScreenData(_ data: [String: Any]) {
+        renderer.updateScreenData(data)
     }
 
     // Add gesture recognizer for going back

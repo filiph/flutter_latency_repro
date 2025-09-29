@@ -26,15 +26,20 @@ import UIKit
         switch call.method {
         case "pushMetalRenderer":
             metalViewController = DirectMetalViewController()
+            
+            // TODO: use this once we get a "close" button there
+            // Hide status bar for maximum screen real estate
+            // metalViewController?.modalPresentationStyle = .fullScreen
+            
             if let args = call.arguments as? [String: Any] {
                 metalViewController?.configure(with: args)
             }
             controller.present(metalViewController!, animated: false, completion: nil)
             result(nil)
 
-        case "updateSpriteData":
+        case "updateScreenData":
             if let args = call.arguments as? [String: Any] {
-                metalViewController?.updateSprites(args)
+                metalViewController?.updateScreenData(args)
             }
             result(nil)
 

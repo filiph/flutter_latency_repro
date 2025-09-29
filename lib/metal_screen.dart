@@ -9,8 +9,8 @@ class MetalScreen {
     await _channel.invokeMethod('pushMetalRenderer', initialData);
   }
 
-  static Future<void> updateScreenData(Map<String, dynamic> spriteData) async {
-    await _channel.invokeMethod('updateSpriteData', spriteData);
+  static Future<void> updateScreenData(Map<String, dynamic> screenData) async {
+    await _channel.invokeMethod('updateScreenData', screenData);
   }
 
   static Future<void> popMetalRenderer() async {

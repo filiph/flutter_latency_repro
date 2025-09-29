@@ -85,8 +85,8 @@ class LowLatencyRenderer: NSObject {
     }
 
     // Update method for future sprite updates
-    func updateSprites(_ data: [String: Any]) {
-        print("Sprites updated: \(data)")
+    func updateScreenData(_ data: [String: Any]) {
+        print("Screen data updated: \(data)")
     }
 }
 
