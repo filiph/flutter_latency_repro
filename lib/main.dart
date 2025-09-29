@@ -5,6 +5,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_latency_repro/metal_screen.dart';
 import 'package:flutter_latency_repro/minimum_latency_render_object.dart';
 import 'package:flutter_latency_repro/minimum_latency_widget.dart';
 import 'package:torch_light/torch_light.dart';
@@ -121,6 +122,14 @@ class _TickingWidgetState extends State<TickingWidget>
           ),
           SizedBox(height: 20),
           Text('AFPL: ${averageFramesPerLoop?.toStringAsFixed(2)}'),
+          SizedBox(height: 20),
+          TextButton(
+            onPressed: () async {
+              _controller.stop();
+              await MetalScreen.pushMetalRenderer(const {});
+            },
+            child: Text('OPEN METAL'),
+          ),
         ],
       ),
     );
