@@ -35,6 +35,22 @@ class DirectMetalViewController: UIViewController {
         metalView.delegate = renderer
 
         view.addSubview(metalView)
+        
+        setupTapGesture()
+    }
+    
+    private func setupTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        tapGesture.numberOfTapsRequired = 1
+
+        metalView.addGestureRecognizer(tapGesture)
+
+        print("Tap gesture added - tap anywhere to dismiss")
+    }
+    
+    @objc private func handleTap(_ gesture: UITapGestureRecognizer) {
+        print("Metal view tapped - dismissing")
+        dismiss(animated: false, completion: nil)
     }
 
     override var prefersStatusBarHidden: Bool {
