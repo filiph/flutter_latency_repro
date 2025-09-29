@@ -41,6 +41,9 @@ class _TickingWidgetState extends State<TickingWidget>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
+  Timer? _metalUpdateTimer;
+  int _metalCounter = 0;
+
   bool torchLightAvailable = false;
 
   int loopCount = 0;
@@ -127,8 +130,26 @@ class _TickingWidgetState extends State<TickingWidget>
             onPressed: () async {
               _controller.stop();
               await MetalScreen.pushMetalRenderer(const {});
+
+              _metalUpdateTimer?.cancel();
+              _metalUpdateTimer = Timer.periodic(const Duration(seconds: 3), (
+                t,
+              ) {
+                maybeBlink();
+                MetalScreen.updateScreenData({'counter': _metalCounter++});
+              });
             },
             child: Text('OPEN METAL'),
+          ),
+          TextButton(
+            onPressed: () async {
+              _controller.repeat();
+              await MetalScreen.popMetalRenderer();
+
+              _metalUpdateTimer?.cancel();
+              _metalUpdateTimer = null;
+            },
+            child: Text('DISPOSE METAL'),
           ),
         ],
       ),

@@ -78,15 +78,43 @@ class LowLatencyRenderer: NSObject {
 
         print("Vertex buffer created with \(vertices.count) floats")
     }
+    
+    private func createVertexDataAlternate() {
+        // Create a simple triangle - each vertex has position (x,y) and color (r,g,b,a)
+        let vertices: [Float] = [
+            // Positions    Colors
+             0.0,  0.8,     0.0, 1.0, 0.0, 1.0,  // Top vertex - Green
+            -0.8, -0.8,     0.0, 0.0, 1.0, 1.0,  // Bottom Left - Blue
+             0.8, -0.8,     1.0, 1.0, 0.0, 1.0   // Bottom Right - Yellow?
+        ]
+
+        let dataSize = vertices.count * MemoryLayout<Float>.size
+        vertexBuffer = device.makeBuffer(bytes: vertices, length: dataSize, options: [])
+
+        guard vertexBuffer != nil else {
+            fatalError("Could not create vertex buffer")
+        }
+
+        print("Vertex buffer created with \(vertices.count) floats")
+    }
 
     // Configuration method for future use
     func initialize(with data: [String: Any]) {
         print("Renderer initialized with data: \(data)")
     }
 
-    // Update method for future sprite updates
     func updateScreenData(_ data: [String: Any]) {
-        print("Screen data updated: \(data)")
+        if let counter = data["counter"] as? Int {
+            if counter % 2 == 0 {
+                createVertexData()
+            } else {
+                createVertexDataAlternate()
+            }
+            
+            print("Counter value: \(counter)")
+        } else {
+            print("Counter not extracted from screen data: \(data)")
+        }
     }
 }
 
