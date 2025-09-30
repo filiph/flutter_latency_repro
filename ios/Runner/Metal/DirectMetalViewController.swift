@@ -92,6 +92,8 @@ class DirectMetalViewController: UIViewController {
         let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(dismissSelf))
         swipeGesture.direction = .down
         view.addGestureRecognizer(swipeGesture)
+        
+        updateScreenData(["counter": 0])
     }
 
     @objc private func dismissSelf() {
