@@ -135,7 +135,6 @@ class _TickingWidgetState extends State<TickingWidget>
               _metalUpdateTimer = Timer.periodic(const Duration(seconds: 3), (
                 t,
               ) {
-                maybeBlink();
                 MetalScreen.updateScreenData({'counter': _metalCounter++});
               });
             },
@@ -195,11 +194,13 @@ class _TickingWidgetState extends State<TickingWidget>
     _controller.addListener(_update);
 
     // Start repeating animation after a short delay.
-    Timer(const Duration(seconds: 2), () {
-      if (!mounted) return;
-      _controller.repeat();
-      stopwatch.start();
-    });
+    if (const bool.fromEnvironment('autostart', defaultValue: false)) {
+      Timer(const Duration(seconds: 2), () {
+        if (!mounted) return;
+        _controller.repeat();
+        stopwatch.start();
+      });
+    }
   }
 
   /// We're doing it this way because [AnimationController.addStatusListener]

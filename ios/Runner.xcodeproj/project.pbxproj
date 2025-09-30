@@ -18,6 +18,7 @@
 		D2C937CC2E8AE8B2002ADE25 /* DirectMetalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C937CA2E8AE8B2002ADE25 /* DirectMetalViewController.swift */; };
 		D2C937CE2E8AEA9E002ADE25 /* LowLatencyRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C937CD2E8AEA9E002ADE25 /* LowLatencyRenderer.swift */; };
 		D2C937D22E8AEB23002ADE25 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = D2C937D12E8AEB1C002ADE25 /* Shaders.metal */; };
+		D2C937D92E8BD496002ADE25 /* TorchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C937D62E8BD406002ADE25 /* TorchManager.swift */; };
 		EC85F43859737E83D19DFCD4 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAB65D75D3484A3B2D26615E /* Pods_Runner.framework */; };
 /* End PBXBuildFile section */
 
@@ -68,6 +69,7 @@
 		D2C937CA2E8AE8B2002ADE25 /* DirectMetalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectMetalViewController.swift; sourceTree = "<group>"; };
 		D2C937CD2E8AEA9E002ADE25 /* LowLatencyRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowLatencyRenderer.swift; sourceTree = "<group>"; };
 		D2C937D12E8AEB1C002ADE25 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
+		D2C937D62E8BD406002ADE25 /* TorchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorchManager.swift; sourceTree = "<group>"; };
 		D402606CC34B7D9444839F89 /* Pods-RunnerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.debug.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		DAB65D75D3484A3B2D26615E /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB47659B0D4754E4D32A1B52 /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
@@ -158,6 +160,7 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
+				D2C937D72E8BD406002ADE25 /* Torch */,
 				D2C937CB2E8AE8B2002ADE25 /* Metal */,
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
 				97C146FD1CF9000F007C117D /* Assets.xcassets */,
@@ -179,6 +182,14 @@
 				D2C937CA2E8AE8B2002ADE25 /* DirectMetalViewController.swift */,
 			);
 			path = Metal;
+			sourceTree = "<group>";
+		};
+		D2C937D72E8BD406002ADE25 /* Torch */ = {
+			isa = PBXGroup;
+			children = (
+				D2C937D62E8BD406002ADE25 /* TorchManager.swift */,
+			);
+			path = Torch;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -395,6 +406,7 @@
 			files = (
 				D2C937CE2E8AEA9E002ADE25 /* LowLatencyRenderer.swift in Sources */,
 				74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */,
+				D2C937D92E8BD496002ADE25 /* TorchManager.swift in Sources */,
 				D2C937CC2E8AE8B2002ADE25 /* DirectMetalViewController.swift in Sources */,
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
 				D2C937D22E8AEB23002ADE25 /* Shaders.metal in Sources */,

@@ -37,6 +37,10 @@ import UIKit
             result(nil)
 
         case "updateScreenData":
+            Task {
+                await TorchManager.blink()
+            }
+            
             if let args = call.arguments as? [String: Any] {
                 metalViewController?.updateScreenData(args)
             }
