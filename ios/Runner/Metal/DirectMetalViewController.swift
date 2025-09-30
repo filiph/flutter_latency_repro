@@ -63,6 +63,7 @@ class DirectMetalViewController: UIViewController {
 
     func updateScreenData(_ data: [String: Any]) {
         renderer.updateScreenData(data)
+        metalView.draw()
     }
 
     // Add gesture recognizer for going back
