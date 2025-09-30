@@ -4,6 +4,7 @@ import MetalKit
 class DirectMetalViewController: UIViewController {
     private var metalView: MTKView!
     private var renderer: LowLatencyRenderer!
+    private var commandQueue: MTLCommandQueue!
 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -12,25 +13,26 @@ class DirectMetalViewController: UIViewController {
     }
     
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        renderer = LowLatencyRenderer()
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        guard let device = MTLCreateSystemDefaultDevice() else {
+        guard let device = MTLCreateSystemDefaultDevice(),
+              let queue = device.makeCommandQueue() else {
             fatalError("Metal is not supported on this device")
         }
         
-        // Disable ALL iOS optimizations that could add latency
+        self.commandQueue = queue
+        
         metalView = MTKView(frame: view.bounds)
         metalView.device = device
         metalView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 
-        // Critical: Set to max refresh rate, disable vsync if needed
         metalView.preferredFramesPerSecond = 120 // ProMotion displays
         metalView.enableSetNeedsDisplay = false // Continuous rendering
+        metalView.presentsWithTransaction = true
 
         metalView.delegate = renderer
 
@@ -63,7 +65,31 @@ class DirectMetalViewController: UIViewController {
 
     func updateScreenData(_ data: [String: Any]) {
         renderer.updateScreenData(data)
-        metalView.draw()
+        
+        // Get the resources needed for this frame.
+        guard let drawable = metalView.currentDrawable,
+              let renderPassDescriptor = metalView.currentRenderPassDescriptor else {
+            return
+        }
+        
+        // Create a command buffer.
+        guard let commandBuffer = commandQueue.makeCommandBuffer() else { return }
+        commandBuffer.label = "Frame Command Buffer"
+        
+        // Synchronous presentation (see https://developer.apple.com/documentation/quartzcore/cametallayer/presentswithtransaction)
+        
+        // Ask the renderer to encode its drawing commands.
+        renderer.encodeRenderCommands(into: commandBuffer, using: renderPassDescriptor)
+        
+        // 1. Commit the command buffer.
+        commandBuffer.commit()
+        
+        // 2. Wait until the GPU has scheduled the work.
+        //    This is the crucial step to ensure a transaction is available.
+        commandBuffer.waitUntilScheduled()
+        
+        // 3. Present the drawable. This is now synchronized with the CATransaction.
+        drawable.present()
     }
 
     // Add gesture recognizer for going back
