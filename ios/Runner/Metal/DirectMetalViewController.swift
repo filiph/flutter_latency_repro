@@ -32,7 +32,7 @@ class DirectMetalViewController: UIViewController {
 
         metalView.preferredFramesPerSecond = 120 // ProMotion displays
         metalView.enableSetNeedsDisplay = false // Continuous rendering
-        metalView.presentsWithTransaction = true
+        // metalView.presentsWithTransaction = true
 
         metalView.delegate = renderer
 
