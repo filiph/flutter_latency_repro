@@ -132,7 +132,7 @@ class _TickingWidgetState extends State<TickingWidget>
               await MetalScreen.pushMetalRenderer(const {});
 
               _metalUpdateTimer?.cancel();
-              _metalUpdateTimer = Timer.periodic(const Duration(seconds: 3), (
+              _metalUpdateTimer = Timer.periodic(const Duration(seconds: 1), (
                 t,
               ) {
                 MetalScreen.updateScreenData({'counter': _metalCounter++});

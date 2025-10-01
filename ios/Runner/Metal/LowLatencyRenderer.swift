@@ -45,13 +45,13 @@ class LowLatencyRenderer: NSObject {
 
     func encodeRenderCommands(into commandBuffer: MTLCommandBuffer, using renderPassDescriptor: MTLRenderPassDescriptor) {
         let vertices: [Float] = (self.counter % 2 == 0) ?
-            [ 0.9, 0.8, 1.0, 1.0, 1.0, 1.0, // Top right
-              0.9, 0.9, 1.0, 1.0, 1.0, 1.0, // Bottom right
-              0.8, 0.9, 1.0, 1.0, 1.0, 1.0 // Bottom left
+            [ 0.9, -0.8, 1.0, 1.0, 1.0, 1.0, // Top right
+              0.9, -0.9, 1.0, 1.0, 1.0, 1.0, // Bottom right
+              0.8, -0.9, 1.0, 1.0, 1.0, 1.0 // Bottom left
             ] :
-            [ 0.8, 0.8, 1.0, 1.0, 1.0, 1.0, // Top left
-              0.9, 0.9, 1.0, 1.0, 1.0, 1.0, // Bottom right
-              0.8, 0.9, 1.0, 1.0, 1.0, 1.0 // Bottom left
+            [ 0.8, -0.8, 1.0, 1.0, 1.0, 1.0, // Top left
+              0.9, -0.9, 1.0, 1.0, 1.0, 1.0, // Bottom right
+              0.8, -0.9, 1.0, 1.0, 1.0, 1.0 // Bottom left
             ];
             
         memcpy(vertexBuffer.contents(), vertices, vertices.count * MemoryLayout<Float>.size)
