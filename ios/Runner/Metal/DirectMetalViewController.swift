@@ -30,8 +30,8 @@ class DirectMetalViewController: UIViewController {
         metalView.device = device
         metalView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 
-        metalView.preferredFramesPerSecond = 120 // ProMotion displays
-        metalView.enableSetNeedsDisplay = false // Continuous rendering
+        metalView.preferredFramesPerSecond = 120
+        metalView.enableSetNeedsDisplay = false
 
         metalView.delegate = renderer
 
