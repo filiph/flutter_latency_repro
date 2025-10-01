@@ -57,6 +57,7 @@ class LowLatencyRenderer: NSObject {
           0.8, -0.9, 1.0, 1.0, 1.0, 1.0, // Bottom left
         ];
 
+        // Copy the data directly to the vertex buffer memory space instead of creating a new vertex buffer.
         memcpy(vertexBuffer.contents(), vertices, vertices.count * MemoryLayout<Float>.size)
 
         guard let encoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor) else { return }
