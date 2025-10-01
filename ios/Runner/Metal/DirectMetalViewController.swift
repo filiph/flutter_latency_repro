@@ -74,7 +74,6 @@ class DirectMetalViewController: UIViewController {
         
         // Create a command buffer.
         guard let commandBuffer = commandQueue.makeCommandBuffer() else { return }
-        commandBuffer.label = "Frame Command Buffer"
         
         // Synchronous presentation (see https://developer.apple.com/documentation/quartzcore/cametallayer/presentswithtransaction)
         
@@ -98,6 +97,8 @@ class DirectMetalViewController: UIViewController {
         let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(dismissSelf))
         swipeGesture.direction = .down
         view.addGestureRecognizer(swipeGesture)
+        
+        updateScreenData(["counter": 0]);
     }
 
     @objc private func dismissSelf() {
