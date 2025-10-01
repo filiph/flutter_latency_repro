@@ -6,7 +6,6 @@ class LowLatencyRenderer: NSObject {
     private var device: MTLDevice!
     private var renderPipelineState: MTLRenderPipelineState!
     private let vertexBuffer: MTLBuffer
-    private var counter: Int = 0
 
     override init() {
         guard let device = MTLCreateSystemDefaultDevice() else {
@@ -23,7 +22,7 @@ class LowLatencyRenderer: NSObject {
         super.init()
         createPipeline()
     }
-    
+
     private func createPipeline() {
         guard let library = device.makeDefaultLibrary(),
               let vertexFunction = library.makeFunction(name: "vertex_main"),
@@ -43,21 +42,25 @@ class LowLatencyRenderer: NSObject {
         }
     }
 
-    func encodeRenderCommands(into commandBuffer: MTLCommandBuffer, using renderPassDescriptor: MTLRenderPassDescriptor) {
-        let vertices: [Float] = (self.counter % 2 == 0) ?
-            [ 0.9, -0.8, 1.0, 1.0, 1.0, 1.0, // Top right
-              0.9, -0.9, 1.0, 1.0, 1.0, 1.0, // Bottom right
-              0.8, -0.9, 1.0, 1.0, 1.0, 1.0 // Bottom left
-            ] :
-            [ 0.8, -0.8, 1.0, 1.0, 1.0, 1.0, // Top left
-              0.9, -0.9, 1.0, 1.0, 1.0, 1.0, // Bottom right
-              0.8, -0.9, 1.0, 1.0, 1.0, 1.0 // Bottom left
-            ];
-            
+    func encodeRenderCommands(
+        _ counter: Int,
+        into commandBuffer: MTLCommandBuffer,
+        using renderPassDescriptor: MTLRenderPassDescriptor)
+    {
+        let vertices: [Float] = (counter % 2 == 0) ?
+        [ 0.9, -0.8, 1.0, 1.0, 1.0, 1.0, // Top right
+          0.9, -0.9, 1.0, 1.0, 1.0, 1.0, // Bottom right
+          0.8, -0.9, 1.0, 1.0, 1.0, 1.0, // Bottom left
+        ] :
+        [ 0.8, -0.8, 1.0, 1.0, 1.0, 1.0, // Top left
+          0.9, -0.9, 1.0, 1.0, 1.0, 1.0, // Bottom right
+          0.8, -0.9, 1.0, 1.0, 1.0, 1.0, // Bottom left
+        ];
+
         memcpy(vertexBuffer.contents(), vertices, vertices.count * MemoryLayout<Float>.size)
-        
+
         guard let encoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor) else { return }
-        
+
         encoder.setRenderPipelineState(renderPipelineState)
         encoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
         encoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 3)
@@ -67,12 +70,6 @@ class LowLatencyRenderer: NSObject {
     // Configuration method for future use
     func initialize(with data: [String: Any]) {
         print("Renderer initialized with data: \(data)")
-    }
-
-    func updateScreenData(_ data: [String: Any]) {
-        if let counter = data["counter"] as? Int {
-            self.counter = counter
-        }
     }
 }
 

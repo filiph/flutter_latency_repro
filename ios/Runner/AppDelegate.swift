@@ -26,10 +26,10 @@ import UIKit
         switch call.method {
         case "pushMetalRenderer":
             metalViewController = DirectMetalViewController()
-            
+
             // Hide status bar for maximum screen real estate
             metalViewController?.modalPresentationStyle = .fullScreen
-            
+
             if let args = call.arguments as? [String: Any] {
                 metalViewController?.configure(with: args)
             }
@@ -40,9 +40,9 @@ import UIKit
             Task {
                 await TorchManager.blink()
             }
-            
-            if let args = call.arguments as? [String: Any] {
-                metalViewController?.updateScreenData(args)
+
+            if let args = call.arguments as? [String: Any], let counter = args["counter"] as? Int {
+                metalViewController?.updateScreen(with: counter)
             }
             result(nil)
 
