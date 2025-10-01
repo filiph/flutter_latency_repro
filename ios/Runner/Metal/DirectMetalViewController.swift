@@ -64,27 +64,33 @@ class DirectMetalViewController: UIViewController {
     }
 
     func updateScreenData(_ data: [String: Any]) {
-        let counter = data["counter"] as? Int ?? 0
+        renderer.updateScreenData(data)
         
+        // Get the resources needed for this frame.
         guard let drawable = metalView.currentDrawable,
-              let renderPassDescriptor = metalView.currentRenderPassDescriptor,
-              let commandBuffer = commandQueue.makeCommandBuffer() else {
+              let renderPassDescriptor = metalView.currentRenderPassDescriptor else {
             return
         }
         
-        renderer.encodeRenderCommands(
-            for: counter,
-            into: commandBuffer,
-            using: renderPassDescriptor
-        )
+        // Create a command buffer.
+        guard let commandBuffer = commandQueue.makeCommandBuffer() else { return }
+        commandBuffer.label = "Frame Command Buffer"
+        
+        // Synchronous presentation (see https://developer.apple.com/documentation/quartzcore/cametallayer/presentswithtransaction)
+        
+        // Ask the renderer to encode its drawing commands.
+        renderer.encodeRenderCommands(into: commandBuffer, using: renderPassDescriptor)
+        
+        // 1. Commit the command buffer.
         commandBuffer.commit()
         
-        // Manually wait for this command buffer to be scheduled...
+        // 2. Wait until the GPU has scheduled the work.
+        //    This is the crucial step to ensure a transaction is available.
         commandBuffer.waitUntilScheduled()
-        // ... because only then will .present() have any effect.
+        
+        // 3. Present the drawable. This is now synchronized with the CATransaction.
         drawable.present()
     }
-
 
     // Add gesture recognizer for going back
     override func viewDidAppear(_ animated: Bool) {
@@ -92,8 +98,6 @@ class DirectMetalViewController: UIViewController {
         let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(dismissSelf))
         swipeGesture.direction = .down
         view.addGestureRecognizer(swipeGesture)
-        
-        updateScreenData(["counter": 0])
     }
 
     @objc private func dismissSelf() {

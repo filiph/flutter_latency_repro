@@ -2,10 +2,11 @@ import Metal
 import MetalKit
 import Foundation
 
-class LowLatencyRenderer: NSObject, MTKViewDelegate {
+class LowLatencyRenderer: NSObject {
     private var device: MTLDevice!
     private var renderPipelineState: MTLRenderPipelineState!
     private let vertexBuffer: MTLBuffer
+    private var counter: Int = 0
 
     override init() {
         guard let device = MTLCreateSystemDefaultDevice() else {
@@ -42,20 +43,13 @@ class LowLatencyRenderer: NSObject, MTKViewDelegate {
         }
     }
 
-    func encodeRenderCommands(
-        for counter: Int,
-        into commandBuffer: MTLCommandBuffer,
-        using renderPassDescriptor: MTLRenderPassDescriptor
-    ) {
-        // Determine vertices based on the passed-in counter
-        let vertices: [Float] = (counter % 2 == 0) ?
+    func encodeRenderCommands(into commandBuffer: MTLCommandBuffer, using renderPassDescriptor: MTLRenderPassDescriptor) {
+        let vertices: [Float] = (self.counter % 2 == 0) ?
             [ 0.0,  0.8, 1.0, 0.0, 0.0, 1.0, -0.8, -0.8, 0.0, 1.0, 0.0, 1.0,  0.8, -0.8, 0.0, 0.0, 1.0, 1.0 ] :
             [ 0.0,  0.8, 0.0, 1.0, 1.0, 1.0, -0.8, -0.8, 1.0, 0.0, 1.0, 1.0,  0.8, -0.8, 1.0, 1.0, 0.0, 1.0 ];
         
-        // Update the buffer contents
         memcpy(vertexBuffer.contents(), vertices, vertices.count * MemoryLayout<Float>.size)
         
-        // Encode the draw commands
         guard let encoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor) else { return }
         
         encoder.setRenderPipelineState(renderPipelineState)
@@ -64,15 +58,23 @@ class LowLatencyRenderer: NSObject, MTKViewDelegate {
         encoder.endEncoding()
     }
 
+    // Configuration method for future use
+    func initialize(with data: [String: Any]) {
+        print("Renderer initialized with data: \(data)")
+    }
+
+    func updateScreenData(_ data: [String: Any]) {
+        if let counter = data["counter"] as? Int {
+            self.counter = counter
+        }
+    }
+}
+
+// MARK: - MTKViewDelegate
+extension LowLatencyRenderer: MTKViewDelegate {
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
         print("Drawable size changed to: \(size)")
     }
 
-    func draw(in view: MTKView) {
-        // Empty. All work is done manually in DirectMetalViewController.
-    }
-    
-    func initialize(with data: [String: Any]) {
-        print("Renderer initialized with \(data)")
-    }
+    func draw(in view: MTKView) {}
 }
