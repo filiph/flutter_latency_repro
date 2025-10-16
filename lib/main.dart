@@ -13,6 +13,9 @@ import 'package:torch_light/torch_light.dart';
 import 'minimum_latency_raw_vertices_widget.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive, overlays: []);
+
   runApp(const MyApp());
 }
 
@@ -24,7 +27,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Latency Repro',
       theme: ThemeData.light(),
-      showPerformanceOverlay: true,
+      // showPerformanceOverlay: true,
       home: Scaffold(body: const TickingWidget()),
     );
   }
